@@ -1,0 +1,1 @@
+An extensible, declarative React layout system based on CSS grid. This is meant as an opinionated layout system, enabling teams to share standardized layouts that can be referenced by UX teams.
