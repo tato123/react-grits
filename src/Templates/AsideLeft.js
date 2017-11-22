@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Grid, createGridItemsForChildren} from '../Grid';
+import {Grid, createGridItemsForChildren} from '../Layouts';
 
 const AsideLeft = ({children, ...rest}) => {
     const [Master, Detail] = createGridItemsForChildren(children);

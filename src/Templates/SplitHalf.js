@@ -1,23 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Grid, createGridItemsForChildren} from '../Grid';
+import {Grid, createGridItemsForChildren} from '../Layouts';
 
-const AsieRight = ({children, ...rest}) => {
+const SplitHalf = ({children, ...rest}) => {
     const [Master, Detail] = createGridItemsForChildren(children);
     return (
         <Grid 
-            templateAreas={[["master", "detail"]]} 
-            templateColumns="70% 30%"
+            templateAreas={[["master", "detail"]]}
+            templateColumns="50% 50%" 
             columnGap="30px" 
-        {...rest}>
+            {...rest}
+        >
            <Master borderRight gridArea="master"/>
            <Detail gridArea="detail"/>
         </Grid>
     );
 }
 
-AsieRight.options = {
+SplitHalf.options = {
     maxChildren: 2
 }
 
-export default AsieRight;
+export default SplitHalf;

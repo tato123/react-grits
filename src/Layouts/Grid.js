@@ -13,16 +13,14 @@ export const Grid = styled.div`
     grid-template-columns: auto;
     grid-auto-rows: minmax(100px, auto);
     ${mapGridTemplateAreas}
-    width: 100vw;
-    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
     grid-column-gap: ${props => props.columnGap || 'initial'};
     grid-template-columns: ${props => props.templateColumns};
 
 
     ${props => props.style}
-    @media only screen and (min-width: 1500px) {
-        border: none;
-    }
+    
 `
 
 export const GridItem = styled.div`
@@ -31,6 +29,10 @@ export const GridItem = styled.div`
     grid-area: ${props => props.gridArea || ''};
     ${props => props.style}
     ${props => props.borderRight && "border-right: 1px solid #c2c2c2;"} ;
+
+    @media only screen and (min-width: 1500px) {
+        border-right: none !important;
+    }
 `;
 
 export const createGridItemsForChildren = (children) => React.Children.map(children, child => (

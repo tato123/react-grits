@@ -60,27 +60,30 @@ export default class Layout extends React.PureComponent {
         return children
     }
 
+    invalidLength = (maxChildren, childLength) => (
+        <ErrorBox>
+        <pre>
+            <code>Invalid layout provided</code>
+            
+        </pre>
+        <pre>
+        <code>
+                {`Expected only ${maxChildren} child components but received ${childLength}`}
+            </code>
+        </pre>
+    </ErrorBox>
+    )
+
     render() {
         const { children, component,render, ...rest } = this.props;
         const element = render ? render() : React.createElement(component);
 
         const childComponents = this.getChildComponents();
         const maxChildren = (element.type.options && element.type.options.maxChildren) || -1;
+        const minChildren = (element.type.options && element.type.options.minChildren) || -1;
         if ( maxChildren >= 0  && childComponents.length > maxChildren) {
-            return (
-                <ErrorBox>
-                    <pre>
-                        <code>Invalid layout provided</code>
-                        
-                    </pre>
-                    <pre>
-                    <code>
-                            {`Expected only ${maxChildren} child components but received ${childComponents.length}`}
-                        </code>
-                    </pre>
-                </ErrorBox>
-            )
-        }
+            return (this.invalidLength(maxChildren, childComponents.length))
+        } 
         
         return (
             <element.type {...element.props}>
