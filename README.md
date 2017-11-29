@@ -1,8 +1,65 @@
+[![Build Status](https://travis-ci.org/tato123/react-grits.svg?branch=master)](https://travis-ci.org/tato123/react-grits)
+
 # Overview
 
 An extensible, declarative React layout system based on CSS grid. This is meant
 as an opinionated layout system, enabling teams to share standardized layouts
 that can be referenced by UX teams.
+
+
+# Using a predefined layout
+```jsx
+ import Layout, {AsideLeft} from 'react-grits';
+
+const MyPage = () => (
+  <Layout component={AsideLeft}>
+    <AwesomeSidebar />
+    <MainContent />
+  </Layout>
+)
+ 
+```
+
+
+# Defining a custom layout
+```jsx
+import {Grid} from 'grid';
+
+
+const OneTopTwoBottom = ({children, ...rest}) => {
+    const [Top, BottomLeft, BottomRight] = createGridItemsForChildren(children);
+    return (
+        <Grid 
+            templateAreas={[["top"], ["bl", "br"]]} 
+            templateColumns="100%"
+            templateRows="50% 50%"
+            columnGap="30px" 
+        {...rest}>
+           <Top gridArea="top"/>
+           <BottomLeft gridArea="bl"/>
+           <BottomRight gridArea="br"/>
+        </Grid>
+    )
+}
+
+
+// Later on we want to use this design ....
+const Page = () => (
+    <Layout component={OneTopTwoBottom}>
+        <img src="large_image.jpg" />
+        
+        <div>
+            This is content that will display left
+        </div>
+
+        <div>
+            This is content that will display right
+        </div>        
+    </Layout>
+)
+
+```
+
 
 # License
 
