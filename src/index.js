@@ -1,4 +1,5 @@
+import Layout from './Layout';
 
-export {Layout as default} from './Layouts';
-export * from './Layouts';
-export * from './Templates';
+export default Layout;
+export {default as Grid} from 'Grid';
+export * from './templates';

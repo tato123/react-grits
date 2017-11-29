@@ -3,14 +3,10 @@
   "version": "0.0.1",
   "description": "Opinionated layout system",
   "main": "dist/react-grits.js",
-  "moodule": "dist/react-grits.js",
   "scripts": {
-    "build": "npm run build:lib && npm run build:dist",
-    "prebuild:lib": "rimraf lib/*",
-    "build:lib": "babel --out-dir lib --ignore \"*.test.js\" src",
-    "prebuild:dist": "rimraf dist/*",
-    "build:dist": "webpack",
-    "build:watch": "npm run build:lib -- --watch"
+    "build": "webpack",
+    "build:watch" : "webpack --watch",
+    "prebuild": "rimraf dist/*"
   },
   "keywords": [
     "CSS",
@@ -22,8 +18,11 @@
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "eslint": "^4.11.0",
     "eslint-config-prettier": "^2.8.0",
@@ -33,7 +32,8 @@
     "prettier": "^1.8.2",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "styled-components": "^2.2.3"
+    "styled-components": "^2.2.3",
+    "webpack": "^3.8.1"
   },
   "dependencies": {
     "babel-plugin-add-module-exports": "^0.2.1",

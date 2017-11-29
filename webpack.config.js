@@ -2,12 +2,13 @@ const path = require("path");
 
 module.exports = {
   entry: "./src/index.js",
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "react-grits.js",
-    library: ["MyLib"],
+    library: "react-grits",
     libraryTarget: "umd",
-    publicPath: "/dist/"
+    umdNamedDefine: true
   },
   module: {
     strictExportPresence: true,
@@ -19,5 +20,19 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  externals : {
+    react: 'react',
+    'react-dom' : 'react-dom',
+    lodash: {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: '_',
+      root: '_'
+    }
+  },
+  resolve: {
+    modules: [path.resolve('./node_modules'), path.resolve('./src')],
+    extensions: ['.json', '.js']
+  },
 };

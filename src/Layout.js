@@ -20,7 +20,11 @@ const ErrorBox = styled.div`
     width: 100%;
     padding: 10px 20px;
     color:#FC333D;
-`
+`;
+
+const PassThrough = ({children}) => (
+    children
+)
 
 export default class Layout extends React.PureComponent {
 
@@ -32,7 +36,8 @@ export default class Layout extends React.PureComponent {
 
     static defaultProps = {
         debug: false,
-        render: null
+        render: null,
+        component: PassThrough
     }
 
     static contextTypes = {
@@ -79,11 +84,14 @@ export default class Layout extends React.PureComponent {
         const element = render ? render() : React.createElement(component);
 
         const childComponents = this.getChildComponents();
-        const maxChildren = (element.type.options && element.type.options.maxChildren) || -1;
-        const minChildren = (element.type.options && element.type.options.minChildren) || -1;
-        if ( maxChildren >= 0  && childComponents.length > maxChildren) {
-            return (this.invalidLength(maxChildren, childComponents.length))
-        } 
+        if (element.type && element.type.options ){
+            const maxChildren = (element.type.options && element.type.options.maxChildren) || -1;
+            const minChildren = (element.type.options && element.type.options.minChildren) || -1;
+            if ( maxChildren >= 0  && childComponents.length > maxChildren) {
+                return (this.invalidLength(maxChildren, childComponents.length))
+            } 
+        }
+        
         
         return (
             <element.type {...element.props}>

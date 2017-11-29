@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Grid, createGridItemsForChildren} from '../Layouts';
+import {Grid, createGridItemsForChildren} from 'Grid';
 
 const Thirds = ({children, ...rest}) => {
     const [View1, View2, View3] = createGridItemsForChildren(children);
