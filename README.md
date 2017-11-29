@@ -2,9 +2,29 @@
 
 # Overview
 
-An extensible, declarative React layout system based on CSS grid. This is meant
-as an opinionated layout system, enabling teams to share standardized layouts
-that can be referenced by UX teams.
+An extensible layout system for React based on the [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification. 
+
+React-Grits attempts to reduce the complexity in sharing, debugging, and previewing standardized layouts by providing a thin layer on top of CSS grid.
+
+# How it works
+
+
+# API
+
+Functions
+- createGridItemsForChildren
+
+Components
+- Layout
+- Grid
+- GridItem
+
+Template Components 
+- SplitHalf
+- AsideLeft
+- AsideRight
+- Thirds
+
 
 
 # Using a predefined layout
