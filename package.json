@@ -38,9 +38,7 @@
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "styled-components": "^2.2.3",
-    "webpack": "^3.8.1"
-  },
-  "dependencies": {
+    "webpack": "^3.8.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0"
