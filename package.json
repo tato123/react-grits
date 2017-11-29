@@ -1,12 +1,13 @@
 {
   "name": "react-grits",
-  "version": "0.0.3",
+  "version": "0.0.3-1",
   "description": "Opinionated layout system",
   "main": "dist/react-grits.js",
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --watch",
-    "prebuild": "rimraf dist/*"
+    "prebuild": "rimraf dist/*",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "CSS",
