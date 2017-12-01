@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const mapGridTemplateAreas = ({templateAreas = []}) => 
     templateAreas.reduce((line, area) => line + `"${area.join(' ')}"`, '');
@@ -23,15 +22,15 @@ export const Grid = styled.div`
 `
 
 export const GridItem = styled.div`
-    grid-column: ${props => props.gridColumn || 'auto'};
-    grid-row: ${props => props.gridRow || 'auto'};
-    grid-area: ${props => props.gridArea || ''};
-    ${props => props.style}
-    ${props => props.borderRight && "border-right: 1px solid #c2c2c2;"} ;
+  grid-column: ${props => props.gridColumn || "auto"};
+  grid-row: ${props => props.gridRow || "auto"};
+  grid-area: ${props => props.gridArea || ""};
+  ${props => props.style} ${props =>
+      props.borderRight && "border-right: 1px solid #c2c2c2;"};
 
-    @media only screen and (min-width: 1500px) {
-        border-right: none !important;
-    }
+  @media only screen and (min-width: 1500px) {
+    border-right: none !important;
+  }
 `;
 
 export const createGridItemsForChildren = (children) => React.Children.map(children, child => (
