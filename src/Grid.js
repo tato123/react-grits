@@ -42,3 +42,5 @@ export const createGridItemsForChildren = (children) => React.Children.map(child
         </GridItem>
     )
 ));
+
+export default Grid;
