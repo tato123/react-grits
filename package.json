@@ -9,14 +9,21 @@
     "prebuild": "rimraf dist/*",
     "prepublish": "npm run build"
   },
-  "keywords": ["CSS", "Grid", "layout", "react"],
+  "keywords": [
+    "CSS",
+    "Grid",
+    "layout",
+    "react"
+  ],
   "author": "Jonathan Fontanez <fontanezj1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tato123/react-grits.git"
