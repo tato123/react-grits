@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const mapGridTemplateAreas = ({templateAreas = []}) => (
-    templateAreas.map(area => `grid-template-areas: "${area.join(' ')}";`)
-)
+const mapGridTemplateAreas = ({templateAreas = []}) => 
+    templateAreas.reduce((line, area) => line + `"${area.join(' ')}"`, '');
 
 const count = ({templateAreas = []}) => (templateAreas.length);
 
@@ -12,7 +11,7 @@ export const Grid = styled.div`
     display: grid;
     grid-template-columns: auto;
     grid-auto-rows: minmax(100px, auto);
-    ${mapGridTemplateAreas}
+    grid-template-areas: ${mapGridTemplateAreas};
     min-width: 100vw;
     min-height: 100vh;
     grid-column-gap: ${props => props.columnGap || 'initial'};
