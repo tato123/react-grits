@@ -43,7 +43,7 @@ const MyPage = () => (
 
 # Defining a custom layout
 ```jsx
-import {Grid} from 'grid';
+import {Grid, createGridItemsForChildren, Layout} from 'react-grits';
 
 
 const OneTopTwoBottom = ({children, ...rest}) => {
