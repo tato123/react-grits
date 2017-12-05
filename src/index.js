@@ -1,4 +1,4 @@
-import * as Layouts from './templates';
+import { Thirds } from "./templates";
 
-export {default as Grid} from 'Grid';
-export default Layouts;
+export { default as Grid } from "Grid";
+export { Thirds };

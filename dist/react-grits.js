@@ -280,7 +280,7 @@ process.umask = function () {
 
 
 exports.__esModule = true;
-exports.createGridItemsForChildren = exports.GridItem = exports.Grid = undefined;
+exports.createGridWithProps = exports.createGridItemsForChildren = exports.GridItem = exports.Grid = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -297,53 +297,80 @@ var _styledComponents2 = _interopRequireDefault(_styledComponents);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 function _taggedTemplateLiteralLoose(strings, raw) { strings.raw = raw; return strings; }
 
 var mapGridTemplateAreas = function mapGridTemplateAreas(_ref) {
-    var _ref$templateAreas = _ref.templateAreas,
-        templateAreas = _ref$templateAreas === undefined ? [] : _ref$templateAreas;
-    return templateAreas.reduce(function (line, area) {
-        return line + ("\"" + area.join(' ') + "\"");
-    }, '');
+  var _ref$templateAreas = _ref.templateAreas,
+      templateAreas = _ref$templateAreas === undefined ? [] : _ref$templateAreas;
+  return templateAreas.reduce(function (line, area) {
+    return line + ("\"" + area.join(' ') + "\"");
+  }, '');
 };
 
 var count = function count(_ref2) {
-    var _ref2$templateAreas = _ref2.templateAreas,
-        templateAreas = _ref2$templateAreas === undefined ? [] : _ref2$templateAreas;
-    return templateAreas.length;
+  var _ref2$templateAreas = _ref2.templateAreas,
+      templateAreas = _ref2$templateAreas === undefined ? [] : _ref2$templateAreas;
+  return templateAreas.length;
 };
 
 var Grid = exports.Grid = _styledComponents2.default.div(_templateObject, mapGridTemplateAreas, function (props) {
-    return props.columnGap || 'initial';
+  return props.columnGap || 'initial';
 }, function (props) {
-    return props.templateColumns;
+  return props.templateColumns;
 }, function (props) {
-    return props.style;
+  return props.style;
 });
 
 var GridItem = exports.GridItem = _styledComponents2.default.div(_templateObject2, function (props) {
-    return props.gridColumn || "auto";
+  return props.gridColumn || "auto";
 }, function (props) {
-    return props.gridRow || "auto";
+  return props.gridRow || "auto";
 }, function (props) {
-    return props.gridArea || "";
+  return props.gridArea || "";
 }, function (props) {
-    return props.style;
+  return props.style;
 }, function (props) {
-    return props.borderRight && "border-right: 1px solid #c2c2c2;";
+  return props.borderRight && "border-right: 1px solid #c2c2c2;";
 });
 
-var createGridItemsForChildren = exports.createGridItemsForChildren = function createGridItemsForChildren(children) {
-    return _react2.default.Children.map(children, function (child) {
-        return function (props) {
-            return _react2.default.createElement(
-                GridItem,
-                props,
-                _react2.default.cloneElement(child, _extends({}, child.props))
-            );
-        };
-    });
+var gridItem = function gridItem(child) {
+  var _child$props = child.props,
+      gridArea = _child$props.gridArea,
+      rest = _objectWithoutProperties(_child$props, ["gridArea"]);
+
+  return _react2.default.createElement(
+    GridItem,
+    { gridArea: gridArea },
+    _react2.default.createElement(child.type, _extends({}, rest), child.props.children)
+  );
 };
+
+var createGridItemsForChildren = exports.createGridItemsForChildren = function createGridItemsForChildren(children) {
+  return _react2.default.Children.map(children, gridItem);
+};
+
+var createGridWithProps = function createGridWithProps(_ref3) {
+  var templateAreas = _ref3.templateAreas,
+      templateColumns = _ref3.templateColumns,
+      columnGap = _ref3.columnGap;
+  return function (_ref4) {
+    var children = _ref4.children,
+        rest = _objectWithoutProperties(_ref4, ["children"]);
+
+    return _react2.default.createElement(
+      Grid,
+      _extends({
+        templateAreas: templateAreas,
+        templateColumns: templateColumns,
+        columnGap: columnGap
+      }, rest),
+      createGridItemsForChildren(children)
+    );
+  };
+};
+exports.createGridWithProps = createGridWithProps;
 
 /***/ }),
 /* 3 */
@@ -364,35 +391,17 @@ var _Error2 = _interopRequireDefault(_Error);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 exports.default = function (options) {
   return function (Component) {
-    return function (_React$Component) {
-      _inherits(ValidatedComponent, _React$Component);
-
-      function ValidatedComponent() {
-        _classCallCheck(this, ValidatedComponent);
-
-        return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+    return function (props) {
+      var count = _react2.default.Children.count(props.children);
+      if (options.minChildren && count < options.minChildren) {
+        var e = new Error("Expected 3 elements, received " + count);
+        return _react2.default.createElement(_Error2.default, { error: e });
       }
 
-      ValidatedComponent.prototype.render = function render() {
-        var count = _react2.default.Children.count(this.props.children);
-        if (options.minChildren && count < options.minChildren) {
-          var e = new Error("Expected 3 elements, received " + count);
-          return _react2.default.createElement(_Error2.default, { error: e });
-        }
-
-        return _react2.default.createElement(Component, null);
-      };
-
-      return ValidatedComponent;
-    }(_react2.default.Component);
+      return _react2.default.createElement(Component, props);
+    };
   };
 };
 
@@ -2859,11 +2868,11 @@ module.exports = warning;
 
 
 exports.__esModule = true;
-exports.Grid = undefined;
+exports.Thirds = exports.Grid = undefined;
 
 var _Grid = __webpack_require__(2);
 
-Object.defineProperty(exports, 'Grid', {
+Object.defineProperty(exports, "Grid", {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_Grid).default;
@@ -2872,13 +2881,9 @@ Object.defineProperty(exports, 'Grid', {
 
 var _templates = __webpack_require__(12);
 
-var Layouts = _interopRequireWildcard(_templates);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = Layouts;
+exports.Thirds = _templates.Thirds;
 
 /***/ }),
 /* 12 */
@@ -2936,8 +2941,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.__esModule = true;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -2950,31 +2953,13 @@ var _Validate2 = _interopRequireDefault(_Validate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var SplitHalf = function SplitHalf(_ref) {
-  var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, ["children"]);
-
-  var _createGridItemsForCh = (0, _Grid.createGridItemsForChildren)(children),
-      Master = _createGridItemsForCh[0],
-      Detail = _createGridItemsForCh[1];
-
-  return _react2.default.createElement(
-    _Grid.Grid,
-    _extends({
-      templateAreas: [["master", "detail"]],
-      templateColumns: "50% 50%",
-      columnGap: "30px"
-    }, rest),
-    _react2.default.createElement(Master, { borderRight: true, gridArea: "master" }),
-    _react2.default.createElement(Detail, { gridArea: "detail" })
-  );
-};
+var templateAreas = [["master", "detail"]];
+var templateColumns = "50% 50%";
+var columnGap = "30px";
 
 exports.default = (0, _Validate2.default)({
   minChildren: 2
-})(SplitHalf);
+})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
 module.exports = exports["default"];
 
 /***/ }),
@@ -5656,8 +5641,6 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -5670,31 +5653,13 @@ var _Validate2 = _interopRequireDefault(_Validate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var AsideLeft = function AsideLeft(_ref) {
-  var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, ["children"]);
-
-  var _createGridItemsForCh = (0, _Grid.createGridItemsForChildren)(children),
-      Master = _createGridItemsForCh[0],
-      Detail = _createGridItemsForCh[1];
-
-  return _react2.default.createElement(
-    _Grid.Grid,
-    _extends({
-      templateAreas: [["master", "detail"]],
-      templateColumns: "30% 70%",
-      columnGap: "30px"
-    }, rest),
-    _react2.default.createElement(Master, { borderRight: true, gridArea: "master" }),
-    _react2.default.createElement(Detail, { gridArea: "detail" })
-  );
-};
+var templateAreas = [["master", "detail"]];
+var templateColumns = "30% 70%";
+var columnGap = "30px";
 
 exports.default = (0, _Validate2.default)({
   minChildren: 2
-})(AsideLeft);
+})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
 module.exports = exports["default"];
 
 /***/ }),
@@ -5706,8 +5671,6 @@ module.exports = exports["default"];
 
 exports.__esModule = true;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -5720,31 +5683,13 @@ var _Validate2 = _interopRequireDefault(_Validate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var AsieRight = function AsieRight(_ref) {
-  var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, ["children"]);
-
-  var _createGridItemsForCh = (0, _Grid.createGridItemsForChildren)(children),
-      Master = _createGridItemsForCh[0],
-      Detail = _createGridItemsForCh[1];
-
-  return _react2.default.createElement(
-    _Grid.Grid,
-    _extends({
-      templateAreas: [["master", "detail"]],
-      templateColumns: "70% 30%",
-      columnGap: "30px"
-    }, rest),
-    _react2.default.createElement(Master, { borderRight: true, gridArea: "master" }),
-    _react2.default.createElement(Detail, { gridArea: "detail" })
-  );
-};
+var templateAreas = [["master", "detail"]];
+var templateColumns = "70% 30%";
+var columnGap = "30px";
 
 exports.default = (0, _Validate2.default)({
   minChildren: 2
-})(AsieRight);
+})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
 module.exports = exports["default"];
 
 /***/ }),
@@ -5756,8 +5701,6 @@ module.exports = exports["default"];
 
 exports.__esModule = true;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -5770,33 +5713,13 @@ var _Validate2 = _interopRequireDefault(_Validate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var Thirds = function Thirds(_ref) {
-  var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, ["children"]);
-
-  var _createGridItemsForCh = (0, _Grid.createGridItemsForChildren)(children),
-      View1 = _createGridItemsForCh[0],
-      View2 = _createGridItemsForCh[1],
-      View3 = _createGridItemsForCh[2];
-
-  return _react2.default.createElement(
-    _Grid.Grid,
-    _extends({
-      templateAreas: [["view1", "view2", "view3"]],
-      templateColumns: "30% 30% 30%",
-      columnGap: "30px"
-    }, rest),
-    _react2.default.createElement(View1, { borderRight: true, gridArea: "view1" }),
-    _react2.default.createElement(View2, { borderRight: true, gridArea: "view2" }),
-    _react2.default.createElement(View3, { gridArea: "view3" })
-  );
-};
+var templateAreas = [["view1", "view2", "view3"]];
+var templateColumns = "30% 30% 30%";
+var columnGap = "30px";
 
 exports.default = (0, _Validate2.default)({
   minChildren: 3
-})(Thirds);
+})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
 module.exports = exports["default"];
 
 /***/ })

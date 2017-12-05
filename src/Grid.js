@@ -33,10 +33,27 @@ export const GridItem = styled.div`
   }
 `;
 
-export const createGridItemsForChildren = (children) => React.Children.map(children, child => (
-    (props) => (
-        <GridItem {...props}>
-            {React.cloneElement(child, {...child.props})}
-        </GridItem>
-    )
-));
+const gridItem =  child => {
+  const {gridArea, ...rest} = child.props;
+  return (
+    <GridItem gridArea={gridArea}>
+      {React.createElement(child.type, { ...rest }, child.props.children)}
+    </GridItem>
+  );
+} 
+
+export const createGridItemsForChildren = children =>
+  React.Children.map(children, gridItem);
+
+export const createGridWithProps = ({templateAreas, templateColumns, columnGap}) => ({ children, ...rest }) => {
+  return (
+    <Grid
+      templateAreas={templateAreas}
+      templateColumns={templateColumns}
+      columnGap={columnGap}
+      {...rest}
+    >
+      {createGridItemsForChildren(children)}      
+    </Grid>
+  );
+};

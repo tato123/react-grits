@@ -7,7 +7,9 @@
     "build": "webpack",
     "build:watch": "webpack --watch",
     "prebuild": "rimraf dist/*",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "keywords": [
     "CSS",
@@ -29,6 +31,9 @@
     "url": "https://github.com/tato123/react-grits.git"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.2.17",
+    "@storybook/addon-links": "^3.2.17",
+    "@storybook/react": "^3.2.17",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",

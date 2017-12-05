@@ -1,23 +1,13 @@
 import React from "react";
-import { Grid, createGridItemsForChildren } from "Grid";
-import withValidate from 'Validate';
+import { createGridWithProps } from "../Grid";
+import withValidate from "../Validate";
 
-const AsideLeft = ({ children, ...rest }) => {
-  const [Master, Detail] = createGridItemsForChildren(children);
-  return (
-    <Grid
-      templateAreas={[["master", "detail"]]}
-      templateColumns="30% 70%"
-      columnGap="30px"
-      {...rest}
-    >
-      <Master borderRight gridArea="master" />
-      <Detail gridArea="detail" />
-    </Grid>
-  );
-};
-
+const templateAreas = [
+  ["master", "detail"]
+];
+const templateColumns = "30% 70%";
+const columnGap = "30px";
 
 export default withValidate({
   minChildren: 2
-})(AsideLeft);
+})(createGridWithProps({ templateAreas, templateColumns, columnGap }));
