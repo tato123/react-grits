@@ -1,25 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import {Grid, createGridItemsForChildren} from 'Grid';
+import React from "react";
+import { createGridWithProps } from "../Grid";
+import validate from "../Validate";
+import debug from "../Debugger";
 
-const Thirds = ({children, ...rest}) => {
-    const [View1, View2, View3] = createGridItemsForChildren(children);
-    return (
-        <Grid 
-            templateAreas={[["view1", "view2", "view3"]]} 
-            templateColumns="30% 30% 30%"
-            columnGap="30px" 
-        {...rest}>
-           <View1 borderRight gridArea="view1"/>
-           <View2 borderRight gridArea="view2"/>
-           <View3 gridArea="view3"/>
-        </Grid>
-    );
-}
+const templateAreas = [
+  ["view1", "view2", "view3"]
+];
+const templateColumns = "30% 30% 30%";
+const columnGap = "30px";
 
-Thirds.options = {
-    maxChildren: 3,
-    minChildren: 3
-}
 
-export default Thirds;
+const validator = validate({minChildren: 3});
+const Component = createGridWithProps({ templateAreas, templateColumns, columnGap });
+export default debug(validator(Component))

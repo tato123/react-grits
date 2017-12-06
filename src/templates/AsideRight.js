@@ -1,23 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import {Grid, createGridItemsForChildren} from 'Grid';
+import React from "react";
+import { createGridWithProps } from "../Grid";
+import validate from "../Validate";
+import debug from "../Debugger";
 
-const AsieRight = ({children, ...rest}) => {
-    const [Master, Detail] = createGridItemsForChildren(children);
-    return (
-        <Grid 
-            templateAreas={[["master", "detail"]]} 
-            templateColumns="70% 30%"
-            columnGap="30px" 
-        {...rest}>
-           <Master borderRight gridArea="master"/>
-           <Detail gridArea="detail"/>
-        </Grid>
-    );
-}
+const templateAreas = [["view1", "view2"]];
+const templateColumns = "70% 30%";
+const columnGap = "30px";
 
-AsieRight.options = {
-    maxChildren: 2
-}
-
-export default AsieRight;
+const validator = validate({minChildren: 2});
+const Component = createGridWithProps({ templateAreas, templateColumns, columnGap });
+export default debug(validator(Component))

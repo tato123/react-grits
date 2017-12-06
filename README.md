@@ -2,40 +2,58 @@
 
 # Overview
 
-An extensible layout system for React based on the [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification. 
+A set of tools to build extensible layouts using [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification. 
 
 React-Grits attempts to reduce the complexity in sharing, debugging, and previewing standardized layouts by providing a thin layer on top of CSS grid.
 
-# How it works
+# Installation
 
+`npm install react-grits`
+
+or through yarn 
+
+`yarn add react-grits`
 
 # API
 
-Functions
+Helpers
 - createGridItemsForChildren
+- createGridWithProps
+- debug
+- validate
 
 Components
-- Layout
 - Grid
 - GridItem
 
-Template Components 
+Pre-defined templates 
 - SplitHalf
 - AsideLeft
 - AsideRight
 - Thirds
 
 
-
 # Using a predefined layout
-```jsx
- import Layout, {AsideLeft} from 'react-grits';
 
+Each layout supports named `grid-areas`, if you forget to include a grid area name thats ok, we will automatically populate it for you.
+
+```jsx
+ import {AsideLeft} from 'react-grits';
+
+// without a grid area defined
 const MyPage = () => (
-  <Layout component={AsideLeft}>
-    <AwesomeSidebar />
-    <MainContent />
-  </Layout>
+  <AsideLeft>
+    <AwesomeSidebar/>
+    <MainContent/>
+  </AsideLeft>
+)
+
+// without defined grid areas
+const MyPage = () => (
+  <AsideLeft>
+    <AwesomeSidebar gridArea="view2"/>
+    <MainContent gridArea="view1" />
+  </AsideLeft>
 )
  
 ```
@@ -43,41 +61,95 @@ const MyPage = () => (
 
 # Defining a custom layout
 ```jsx
-import {Grid} from 'grid';
+import {Grid} from 'react-grits';
+
+// start by defining your template areas
+const templateAreas = [
+    ["a", "b"],
+    ["c", "c"]
+];
+
+// want to define split 50/50?
+const templateColumns = "50% 50%";
+
+// add validation rules, specify how many children are required
+const validator = validate({minChildren: 3});
+
+// Create our CSS grid
+const Component = createGridWithProps({ templateAreas, templateColumns, columnGap });
+
+// Enhance our component with debugging and validation
+export default debug(validator(Component))
+```
+
+# Pre-Defined Application Layouts
+
+These are a couple of included templates that can be used with any framework
+
+## Aside Left
+Provides a left sidebar and a main region seperated a column gap. This is a commonly seen pattern with dashboard sites and nav+data views.
+
+![AsideLeft](docs/asideleft.png)
+
+**Code Example**
+
+```jsx
+import {AsideLeft} from 'react-grits';
+
+<AsideLeft> 
+   <Side gridArea="view1" />
+   <Master gridArea="view2" />
+</AsideLeft>
+```
+
+## Aside Right
+Provides a right sidebar and a main region with a configurable gap distance. 
+
+![AsideRight](docs/asideright.png)
+
+**Code Example**
+
+```jsx
+import {AsideRight} from 'react-grits';
+
+<AsideRight>    
+   <Master gridArea="view1" />
+   <Side gridArea="view2" />
+</AsideRight>
+```
+
+## Split Half Template
+Splits each view equally into two columns seperated by a column gap.
+
+![SplitHalf](docs/split_half.png)
+
+**Code Example**
+
+```jsx
+import {SplitHalf} from 'react-grits';
+
+<SplitHalf> 
+   <FooView gridArea="view1" />
+   <BarView gridArea="view2" />
+</SplitHalf>
+```
 
 
-const OneTopTwoBottom = ({children, ...rest}) => {
-    const [Top, BottomLeft, BottomRight] = createGridItemsForChildren(children);
-    return (
-        <Grid 
-            templateAreas={[["top"], ["bl", "br"]]} 
-            templateColumns="100%"
-            templateRows="50% 50%"
-            columnGap="30px" 
-        {...rest}>
-           <Top gridArea="top"/>
-           <BottomLeft gridArea="bl"/>
-           <BottomRight gridArea="br"/>
-        </Grid>
-    )
-}
+## Thirds
+Provides a three column approach where each column has an equal width and an equal gap.
 
+![Thirds](docs/thirds.png)
 
-// Later on we want to use this design ....
-const Page = () => (
-    <Layout component={OneTopTwoBottom}>
-        <img src="large_image.jpg" />
-        
-        <div>
-            This is content that will display left
-        </div>
+**Code Example**
 
-        <div>
-            This is content that will display right
-        </div>        
-    </Layout>
-)
+```jsx
+import {Thirds} from 'react-grits';
 
+<Thirds> 
+   <ACol gridArea="view1" />
+   <BCol gridArea="view2" />
+   <CCol gridArea="view3" />
+</Thirds>
 ```
 
 

@@ -1,6 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const mapGridTemplateAreas = ({templateAreas = []}) => 
     templateAreas.reduce((line, area) => line + `"${area.join(' ')}"`, '');
@@ -23,21 +22,40 @@ export const Grid = styled.div`
 `
 
 export const GridItem = styled.div`
-    grid-column: ${props => props.gridColumn || 'auto'};
-    grid-row: ${props => props.gridRow || 'auto'};
-    grid-area: ${props => props.gridArea || ''};
-    ${props => props.style}
-    ${props => props.borderRight && "border-right: 1px solid #c2c2c2;"} ;
+  grid-column: ${props => props.gridColumn || "auto"};
+  grid-row: ${props => props.gridRow || "auto"};
+  grid-area: ${props => props.gridArea || ""};
+  ${props => props.style} ${props =>
+      props.borderRight && "border-right: 1px solid #c2c2c2;"};
 
-    @media only screen and (min-width: 1500px) {
-        border-right: none !important;
-    }
+  @media only screen and (min-width: 1500px) {
+    border-right: none !important;
+  }
+  
+  box-sizing: border-box;
 `;
 
-export const createGridItemsForChildren = (children) => React.Children.map(children, child => (
-    (props) => (
-        <GridItem {...props}>
-            {React.cloneElement(child, {...child.props})}
-        </GridItem>
-    )
-));
+const gridItem =  child => {
+  const {gridArea = ".", ...rest} = child.props;
+  return (
+    <GridItem gridArea={gridArea}>
+      {React.createElement(child.type, { ...rest }, child.props.children)}
+    </GridItem>
+  );
+} 
+
+export const createGridItemsForChildren = children =>
+  React.Children.map(children, gridItem);
+
+export const createGridWithProps = ({templateAreas, templateColumns, columnGap}) => ({ children, ...rest }) => {
+  return (
+    <Grid
+      templateAreas={templateAreas}
+      templateColumns={templateColumns}
+      columnGap={columnGap}
+      {...rest}
+    >
+      {createGridItemsForChildren(children)}      
+    </Grid>
+  );
+};

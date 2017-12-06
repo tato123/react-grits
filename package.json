@@ -7,32 +7,49 @@
     "build": "webpack",
     "build:watch": "webpack --watch",
     "prebuild": "rimraf dist/*",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
-  "keywords": ["CSS", "Grid", "layout", "react"],
+  "keywords": [
+    "CSS",
+    "Grid",
+    "layout",
+    "react"
+  ],
   "author": "Jonathan Fontanez <fontanezj1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tato123/react-grits.git"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.2.17",
+    "@storybook/addon-links": "^3.2.17",
+    "@storybook/react": "^3.2.17",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "eslint": "^4.11.0",
+    "eslint": "^4.12.1",
     "eslint-config-prettier": "^2.8.0",
+    "eslint-config-react-app": "^2.0.1",
+    "eslint-loader": "^1.9.0",
     "eslint-plugin-flowtype": "^2.39.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-standard": "^3.0.1",
     "prettier": "^1.8.2",
@@ -40,5 +57,6 @@
     "react-dom": "^16.1.1",
     "styled-components": "^2.2.3",
     "webpack": "^3.8.1"
-  }
+  },
+  "dependencies": {}
 }
