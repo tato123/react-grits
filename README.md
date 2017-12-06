@@ -6,8 +6,13 @@ A set of tools to build extensible layouts using [CSS grid](https://developer.mo
 
 React-Grits attempts to reduce the complexity in sharing, debugging, and previewing standardized layouts by providing a thin layer on top of CSS grid.
 
-# How it works
+# Installation
 
+`npm install react-grits`
+
+or through yarn 
+
+`yarn add react-grits`
 
 # API
 
