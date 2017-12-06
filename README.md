@@ -56,7 +56,7 @@ const MyPage = () => (
 
 # Defining a custom layout
 ```jsx
-import {Grid} from 'grid';
+import {Grid} from 'react-grits';
 
 // start by defining your template areas
 const templateAreas = [
@@ -75,6 +75,76 @@ const Component = createGridWithProps({ templateAreas, templateColumns, columnGa
 
 // Enhance our component with debugging and validation
 export default debug(validator(Component))
+```
+
+# Pre-Defined Application Layouts
+
+These are a couple of included templates that can be used with any framework
+
+## Aside Left
+Provides a left sidebar and a main region seperated a column gap. This is a commonly seen pattern with dashboard sites and nav+data views.
+
+![AsideLeft](docs/asideleft.png)
+
+**Code Example**
+
+```jsx
+import {AsideLeft} from 'react-grits';
+
+<AsideLeft> 
+   <Side gridArea="view1" />
+   <Master gridArea="view2" />
+</AsideLeft>
+```
+
+## Aside Right
+Provides a right sidebar and a main region with a configurable gap distance. 
+
+![AsideRight](docs/asideright.png)
+
+**Code Example**
+
+```jsx
+import {AsideRight} from 'react-grits';
+
+<AsideRight>    
+   <Master gridArea="view1" />
+   <Side gridArea="view2" />
+</AsideRight>
+```
+
+## Split Half Template
+Splits each view equally into two columns seperated by a column gap.
+
+![SplitHalf](docs/split_half.png)
+
+**Code Example**
+
+```jsx
+import {SplitHalf} from 'react-grits';
+
+<SplitHalf> 
+   <FooView gridArea="view1" />
+   <BarView gridArea="view2" />
+</SplitHalf>
+```
+
+
+## Thirds
+Provides a three column approach where each column has an equal width and an equal gap.
+
+![Thirds](docs/thirds.png)
+
+**Code Example**
+
+```jsx
+import {Thirds} from 'react-grits';
+
+<Thirds> 
+   <ACol gridArea="view1" />
+   <BCol gridArea="view2" />
+   <CCol gridArea="view3" />
+</Thirds>
 ```
 
 
