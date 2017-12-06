@@ -285,7 +285,7 @@ exports.createGridWithProps = exports.createGridItemsForChildren = exports.GridI
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _templateObject = _taggedTemplateLiteralLoose(["\n    display: grid;\n    grid-template-columns: auto;\n    grid-auto-rows: minmax(100px, auto);\n    grid-template-areas: ", ";\n    min-width: 100vw;\n    min-height: 100vh;\n    grid-column-gap: ", ";\n    grid-template-columns: ", ";\n\n\n    ", "\n    \n"], ["\n    display: grid;\n    grid-template-columns: auto;\n    grid-auto-rows: minmax(100px, auto);\n    grid-template-areas: ", ";\n    min-width: 100vw;\n    min-height: 100vh;\n    grid-column-gap: ", ";\n    grid-template-columns: ", ";\n\n\n    ", "\n    \n"]),
-    _templateObject2 = _taggedTemplateLiteralLoose(["\n  grid-column: ", ";\n  grid-row: ", ";\n  grid-area: ", ";\n  ", " ", ";\n\n  @media only screen and (min-width: 1500px) {\n    border-right: none !important;\n  }\n"], ["\n  grid-column: ", ";\n  grid-row: ", ";\n  grid-area: ", ";\n  ", " ", ";\n\n  @media only screen and (min-width: 1500px) {\n    border-right: none !important;\n  }\n"]);
+    _templateObject2 = _taggedTemplateLiteralLoose(["\n  grid-column: ", ";\n  grid-row: ", ";\n  grid-area: ", ";\n  ", " ", ";\n\n  @media only screen and (min-width: 1500px) {\n    border-right: none !important;\n  }\n  \n  box-sizing: border-box;\n"], ["\n  grid-column: ", ";\n  grid-row: ", ";\n  grid-area: ", ";\n  ", " ", ";\n\n  @media only screen and (min-width: 1500px) {\n    border-right: none !important;\n  }\n  \n  box-sizing: border-box;\n"]);
 
 var _react = __webpack_require__(0);
 
@@ -337,7 +337,8 @@ var GridItem = exports.GridItem = _styledComponents2.default.div(_templateObject
 
 var gridItem = function gridItem(child) {
   var _child$props = child.props,
-      gridArea = _child$props.gridArea,
+      _child$props$gridArea = _child$props.gridArea,
+      gridArea = _child$props$gridArea === undefined ? "." : _child$props$gridArea,
       rest = _objectWithoutProperties(_child$props, ["gridArea"]);
 
   return _react2.default.createElement(
@@ -2860,7 +2861,75 @@ module.exports = warning;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 10 */,
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _templateObject = _taggedTemplateLiteralLoose(["\n  height: 100%;\n  width: 100%;\n  background:#90CAF9;\n"], ["\n  height: 100%;\n  width: 100%;\n  background:#90CAF9;\n"]);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _styledComponents = __webpack_require__(4);
+
+var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _taggedTemplateLiteralLoose(strings, raw) { strings.raw = raw; return strings; }
+
+var BorderBox = _styledComponents2.default.div(_templateObject);
+
+exports.default = function (Component) {
+  return function (_React$Component) {
+    _inherits(Debugger, _React$Component);
+
+    function Debugger() {
+      _classCallCheck(this, Debugger);
+
+      return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+    }
+
+    Debugger.prototype.render = function render() {
+      var _this2 = this;
+
+      var children = this.props.children;
+
+      var newElements = _react2.default.Children.map(children, function (child) {
+        if (_this2.props.debug) {
+          return _react2.default.createElement(BorderBox, { gridArea: "." });
+        }
+        return _react2.default.cloneElement(child, child.props);
+      });
+      var customStyle = _extends({}, this.props.style, this.props.debug ? { border: '1px solid blue' } : {});
+
+      return _react2.default.createElement(
+        Component,
+        _extends({}, this.props, { style: customStyle }),
+        newElements
+      );
+    };
+
+    return Debugger;
+  }(_react2.default.Component);
+};
+
+module.exports = exports["default"];
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2868,21 +2937,31 @@ module.exports = warning;
 
 
 exports.__esModule = true;
-exports.Thirds = exports.Grid = undefined;
-
-var _Grid = __webpack_require__(2);
-
-Object.defineProperty(exports, "Grid", {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_Grid).default;
-  }
-});
+exports.Thirds = exports.SplitHalf = exports.AsideLeft = exports.AsideRight = exports.createGridWithProps = exports.createGridItemsForChildren = exports.GridItem = exports.Grid = exports.validate = exports.debug = undefined;
 
 var _templates = __webpack_require__(12);
 
+var _Grid = __webpack_require__(2);
+
+var _Validate = __webpack_require__(3);
+
+var _Validate2 = _interopRequireDefault(_Validate);
+
+var _Debugger = __webpack_require__(10);
+
+var _Debugger2 = _interopRequireDefault(_Debugger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+exports.debug = _Debugger2.default;
+exports.validate = _Validate2.default;
+exports.Grid = _Grid.Grid;
+exports.GridItem = _Grid.GridItem;
+exports.createGridItemsForChildren = _Grid.createGridItemsForChildren;
+exports.createGridWithProps = _Grid.createGridWithProps;
+exports.AsideRight = _templates.AsideRight;
+exports.AsideLeft = _templates.AsideLeft;
+exports.SplitHalf = _templates.SplitHalf;
 exports.Thirds = _templates.Thirds;
 
 /***/ }),
@@ -2951,15 +3030,19 @@ var _Validate = __webpack_require__(3);
 
 var _Validate2 = _interopRequireDefault(_Validate);
 
+var _Debugger = __webpack_require__(10);
+
+var _Debugger2 = _interopRequireDefault(_Debugger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var templateAreas = [["master", "detail"]];
+var templateAreas = [["view1", "view2"]];
 var templateColumns = "50% 50%";
 var columnGap = "30px";
 
-exports.default = (0, _Validate2.default)({
-  minChildren: 2
-})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
+var validator = (0, _Validate2.default)({ minChildren: 2 });
+var Component = (0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap });
+exports.default = (0, _Debugger2.default)(validator(Component));
 module.exports = exports["default"];
 
 /***/ }),
@@ -5651,15 +5734,19 @@ var _Validate = __webpack_require__(3);
 
 var _Validate2 = _interopRequireDefault(_Validate);
 
+var _Debugger = __webpack_require__(10);
+
+var _Debugger2 = _interopRequireDefault(_Debugger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var templateAreas = [["master", "detail"]];
+var templateAreas = [["view1", "view2"]];
 var templateColumns = "30% 70%";
 var columnGap = "30px";
 
-exports.default = (0, _Validate2.default)({
-  minChildren: 2
-})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
+var validator = (0, _Validate2.default)({ minChildren: 2 });
+var Component = (0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap });
+exports.default = (0, _Debugger2.default)(validator(Component));
 module.exports = exports["default"];
 
 /***/ }),
@@ -5681,15 +5768,19 @@ var _Validate = __webpack_require__(3);
 
 var _Validate2 = _interopRequireDefault(_Validate);
 
+var _Debugger = __webpack_require__(10);
+
+var _Debugger2 = _interopRequireDefault(_Debugger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var templateAreas = [["master", "detail"]];
+var templateAreas = [["view1", "view2"]];
 var templateColumns = "70% 30%";
 var columnGap = "30px";
 
-exports.default = (0, _Validate2.default)({
-  minChildren: 2
-})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
+var validator = (0, _Validate2.default)({ minChildren: 2 });
+var Component = (0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap });
+exports.default = (0, _Debugger2.default)(validator(Component));
 module.exports = exports["default"];
 
 /***/ }),
@@ -5711,15 +5802,19 @@ var _Validate = __webpack_require__(3);
 
 var _Validate2 = _interopRequireDefault(_Validate);
 
+var _Debugger = __webpack_require__(10);
+
+var _Debugger2 = _interopRequireDefault(_Debugger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var templateAreas = [["view1", "view2", "view3"]];
 var templateColumns = "30% 30% 30%";
 var columnGap = "30px";
 
-exports.default = (0, _Validate2.default)({
-  minChildren: 3
-})((0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap }));
+var validator = (0, _Validate2.default)({ minChildren: 3 });
+var Component = (0, _Grid.createGridWithProps)({ templateAreas: templateAreas, templateColumns: templateColumns, columnGap: columnGap });
+exports.default = (0, _Debugger2.default)(validator(Component));
 module.exports = exports["default"];
 
 /***/ })

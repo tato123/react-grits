@@ -31,10 +31,12 @@ export const GridItem = styled.div`
   @media only screen and (min-width: 1500px) {
     border-right: none !important;
   }
+  
+  box-sizing: border-box;
 `;
 
 const gridItem =  child => {
-  const {gridArea, ...rest} = child.props;
+  const {gridArea = ".", ...rest} = child.props;
   return (
     <GridItem gridArea={gridArea}>
       {React.createElement(child.type, { ...rest }, child.props.children)}

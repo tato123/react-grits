@@ -2,7 +2,7 @@
 
 # Overview
 
-An extensible layout system for React based on the [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification. 
+A set of tools to build extensible layouts using [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification. 
 
 React-Grits attempts to reduce the complexity in sharing, debugging, and previewing standardized layouts by providing a thin layer on top of CSS grid.
 
@@ -11,31 +11,44 @@ React-Grits attempts to reduce the complexity in sharing, debugging, and preview
 
 # API
 
-Functions
+Helpers
 - createGridItemsForChildren
+- createGridWithProps
+- debug
+- validate
 
 Components
-- Layout
 - Grid
 - GridItem
 
-Template Components 
+Pre-defined templates 
 - SplitHalf
 - AsideLeft
 - AsideRight
 - Thirds
 
 
-
 # Using a predefined layout
-```jsx
- import Layout, {AsideLeft} from 'react-grits';
 
+Each layout supports named `grid-areas`, if you forget to include a grid area name thats ok, we will automatically populate it for you.
+
+```jsx
+ import {AsideLeft} from 'react-grits';
+
+// without a grid area defined
 const MyPage = () => (
-  <Layout component={AsideLeft}>
-    <AwesomeSidebar />
-    <MainContent />
-  </Layout>
+  <AsideLeft>
+    <AwesomeSidebar/>
+    <MainContent/>
+  </AsideLeft>
+)
+
+// without defined grid areas
+const MyPage = () => (
+  <AsideLeft>
+    <AwesomeSidebar gridArea="view2"/>
+    <MainContent gridArea="view1" />
+  </AsideLeft>
 )
  
 ```
@@ -45,39 +58,23 @@ const MyPage = () => (
 ```jsx
 import {Grid} from 'grid';
 
+// start by defining your template areas
+const templateAreas = [
+    ["a", "b"],
+    ["c", "c"]
+];
 
-const OneTopTwoBottom = ({children, ...rest}) => {
-    const [Top, BottomLeft, BottomRight] = createGridItemsForChildren(children);
-    return (
-        <Grid 
-            templateAreas={[["top"], ["bl", "br"]]} 
-            templateColumns="100%"
-            templateRows="50% 50%"
-            columnGap="30px" 
-        {...rest}>
-           <Top gridArea="top"/>
-           <BottomLeft gridArea="bl"/>
-           <BottomRight gridArea="br"/>
-        </Grid>
-    )
-}
+// want to define split 50/50?
+const templateColumns = "50% 50%";
 
+// add validation rules, specify how many children are required
+const validator = validate({minChildren: 3});
 
-// Later on we want to use this design ....
-const Page = () => (
-    <Layout component={OneTopTwoBottom}>
-        <img src="large_image.jpg" />
-        
-        <div>
-            This is content that will display left
-        </div>
+// Create our CSS grid
+const Component = createGridWithProps({ templateAreas, templateColumns, columnGap });
 
-        <div>
-            This is content that will display right
-        </div>        
-    </Layout>
-)
-
+// Enhance our component with debugging and validation
+export default debug(validator(Component))
 ```
 
 

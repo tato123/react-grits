@@ -1,6 +1,7 @@
 import React from "react";
 import { createGridWithProps } from "../Grid";
-import withValidate from "../Validate";
+import validate from "../Validate";
+import debug from "../Debugger";
 
 const templateAreas = [
   ["view1", "view2", "view3"]
@@ -8,6 +9,7 @@ const templateAreas = [
 const templateColumns = "30% 30% 30%";
 const columnGap = "30px";
 
-export default withValidate({
-  minChildren: 3
-})(createGridWithProps({ templateAreas, templateColumns, columnGap }));
+
+const validator = validate({minChildren: 3});
+const Component = createGridWithProps({ templateAreas, templateColumns, columnGap });
+export default debug(validator(Component))
