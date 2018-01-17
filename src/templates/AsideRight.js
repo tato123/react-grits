@@ -4,7 +4,7 @@ import validate from "../Validate";
 import debug from "../Debugger";
 
 const templateAreas = [["view1", "view2"]];
-const templateColumns = "70% 30%";
+const templateColumns = "7fr 3fr";
 const columnGap = "30px";
 
 const validator = validate({minChildren: 2});
