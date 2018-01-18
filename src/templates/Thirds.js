@@ -6,7 +6,7 @@ import debug from "../Debugger";
 const templateAreas = [
   ["view1", "view2", "view3"]
 ];
-const templateColumns = "30% 30% 30%";
+const templateColumns = "1fr 1fr 1fr";
 const columnGap = "30px";
 
 

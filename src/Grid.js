@@ -1,61 +1,59 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const mapGridTemplateAreas = ({templateAreas = []}) => 
+const mapGridTemplateAreas = ({templateAreas = []}) =>
     templateAreas.reduce((line, area) => line + `"${area.join(' ')}"`, '');
-
-const count = ({templateAreas = []}) => (templateAreas.length);
 
 export const Grid = styled.div`
     display: grid;
-    grid-template-columns: auto;
     grid-auto-rows: minmax(100px, auto);
-    grid-template-areas: ${mapGridTemplateAreas};
-    min-width: 100vw;
-    min-height: 100vh;
+    grid-template-areas: ${props => props.templateAreas};
     grid-column-gap: ${props => props.columnGap || 'initial'};
-    grid-template-columns: ${props => props.templateColumns};
-
+    grid-template-columns: ${props => props.templateColumns || 'initial'};
+    grid-template-rows: ${props => props.templateRows || 'initial'};
+    grid-row-gap: ${props => props.rowGap || 'initial'};
 
     ${props => props.style}
-    
 `
 
 export const GridItem = styled.div`
   grid-column: ${props => props.gridColumn || "auto"};
   grid-row: ${props => props.gridRow || "auto"};
   grid-area: ${props => props.gridArea || ""};
-  ${props => props.style} ${props =>
-      props.borderRight && "border-right: 1px solid #c2c2c2;"};
-
-  @media only screen and (min-width: 1500px) {
-    border-right: none !important;
-  }
-  
   box-sizing: border-box;
 `;
 
-const gridItem =  child => {
+const gridItem = WrapperComponent => child => {
   const {gridArea = ".", ...rest} = child.props;
   return (
-    <GridItem gridArea={gridArea}>
+    <WrapperComponent gridArea={gridArea}>
       {React.createElement(child.type, { ...rest }, child.props.children)}
-    </GridItem>
+    </WrapperComponent>
   );
-} 
+}
 
-export const createGridItemsForChildren = children =>
-  React.Children.map(children, gridItem);
+export const createGridItemsForChildren = (children, WrapperComponent = GridItem) =>
+  React.Children.map(children, gridItem(WrapperComponent));
 
-export const createGridWithProps = ({templateAreas, templateColumns, columnGap}) => ({ children, ...rest }) => {
+export const createGridWithProps = ({
+  templateAreas,
+  templateColumns,
+  templateRows,
+  columnGap,
+  rowGap,
+}, components = {}) => ({ children, ...rest }) => {
+  const GridComponent = components.GridComponent || Grid;
+  const ItemComponent = components.ItemComponent || GridItem;
   return (
-    <Grid
-      templateAreas={templateAreas}
+    <GridComponent
+      templateAreas={mapGridTemplateAreas(templateAreas)}
       templateColumns={templateColumns}
       columnGap={columnGap}
+      templateRows={templateRows}
+      rowGap={rowGap}
       {...rest}
     >
-      {createGridItemsForChildren(children)}      
-    </Grid>
+      {createGridItemsForChildren(children, ItemComponent)}
+    </GridComponent>
   );
 };

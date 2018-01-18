@@ -2,7 +2,7 @@
 
 # Overview
 
-A set of tools to build extensible layouts using [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification. 
+A set of tools to build extensible layouts using [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/grid) specification.
 
 React-Grits attempts to reduce the complexity in sharing, debugging, and previewing standardized layouts by providing a thin layer on top of CSS grid.
 
@@ -10,23 +10,37 @@ React-Grits attempts to reduce the complexity in sharing, debugging, and preview
 
 `npm install react-grits`
 
-or through yarn 
+or through yarn
 
 `yarn add react-grits`
 
 # API
 
 Helpers
-- createGridItemsForChildren
-- createGridWithProps
-- debug
-- validate
+- `createGridItemsForChildren`
+    - Arguments:
+        - `children`: React node or array of nodes
+        - `WrapperComponent`: Optional component to wrap each item. Defaults to GridItem.
+- `createGridWithProps`
+    - Arguments:
+        - `props`: A set of configuration properties to provide to the grid component:
+            - `templateAreas`: a nested array of named template areas
+            - `templateColumns`: an string list of column sizes
+            - `templateRows`: an string list of row sizes
+            - `columnGap`: a string to define the gap size between columns
+            - `rowGap`: a string to define the gap size between rows
+        - `components`: A set of components which can be used to override rendering
+            - `GridComponent`: a component which defines the grid layout
+            - `ItemComponent`: a component which will wrap all children
+            - See [this section](#Customizing-Layout-Components) for more information
+- `debug`: a higher-order component which wraps a layout created with `createGridWithProps` and enables debugging by passing a `debug=true` prop
+- `validate`: a function which creates a higher-order component that will validate the number of children passed to a layout
 
 Components
 - Grid
 - GridItem
 
-Pre-defined templates 
+Pre-defined templates
 - SplitHalf
 - AsideLeft
 - AsideRight
@@ -55,13 +69,13 @@ const MyPage = () => (
     <MainContent gridArea="view1" />
   </AsideLeft>
 )
- 
+
 ```
 
 
 # Defining a custom layout
 ```jsx
-import {Grid} from 'react-grits';
+import { validate, createGridWithProps, debug } from 'react-grits';
 
 // start by defining your template areas
 const templateAreas = [
@@ -96,14 +110,14 @@ Provides a left sidebar and a main region seperated a column gap. This is a comm
 ```jsx
 import {AsideLeft} from 'react-grits';
 
-<AsideLeft> 
+<AsideLeft>
    <Side gridArea="view1" />
    <Master gridArea="view2" />
 </AsideLeft>
 ```
 
 ## Aside Right
-Provides a right sidebar and a main region with a configurable gap distance. 
+Provides a right sidebar and a main region with a gap between columns.
 
 ![AsideRight](docs/asideright.png)
 
@@ -112,7 +126,7 @@ Provides a right sidebar and a main region with a configurable gap distance.
 ```jsx
 import {AsideRight} from 'react-grits';
 
-<AsideRight>    
+<AsideRight>
    <Master gridArea="view1" />
    <Side gridArea="view2" />
 </AsideRight>
@@ -128,7 +142,7 @@ Splits each view equally into two columns seperated by a column gap.
 ```jsx
 import {SplitHalf} from 'react-grits';
 
-<SplitHalf> 
+<SplitHalf>
    <FooView gridArea="view1" />
    <BarView gridArea="view2" />
 </SplitHalf>
@@ -145,13 +159,29 @@ Provides a three column approach where each column has an equal width and an equ
 ```jsx
 import {Thirds} from 'react-grits';
 
-<Thirds> 
+<Thirds>
    <ACol gridArea="view1" />
    <BCol gridArea="view2" />
    <CCol gridArea="view3" />
 </Thirds>
 ```
 
+# Customizing Layout Components
+The library ships with underlying components which handle defining the CSS grid layout using reasonable default behaviors.
+
+If you want to customize the styles of either the containing Grid component, or the Item components which wrap each child within a layout, you may pass overriding components to the `createGridWithProps` function when you define your layout.
+
+`createGridWithProps({ GridComponent: MyCustomGrid, ItemComponent: MyCustomItem });`
+
+Each component is passed certain props which you can use to define your styling. The library exports the default components as `Grid` and `GridItem`. They are created using `styled-components`, and can be extended or wrapped if you want to build on top of existing styles.
+
+## Grid
+
+The Grid component receives the provided `templateColumns`, `templateRows`, `columnGap`, `rowGap` props. It also receives a parsed version of `templateAreas` which is ready to be used as a CSS property value. Finally, any further props which are passed through by the user are supplied to Grid, including `style` and other common props.
+
+## GridItem
+
+The item component will automatically be used to wrap all children in a layout. It receives one prop, `gridArea`, which is supplied by the user to the wrapped child. Use this prop as a CSS value to put the component into its proper grid space. You may also use it to define some custom logic if you wish.
 
 # License
 
